@@ -1,0 +1,109 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = F1Blazor2
+build_property.RootNamespace = F1Blazor2
+build_property.ProjectDir = C:\Users\unail\source\repos\F1Blazor2\F1Blazor2\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\unail\source\repos\F1Blazor2\F1Blazor2
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Carrera/Carreras.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FycmVyYVxDYXJyZXJhcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Carrera/CrearCarrera.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FycmVyYVxDcmVhckNhcnJlcmEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Carrera/DetallesCarrera.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FycmVyYVxEZXRhbGxlc0NhcnJlcmEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Carrera/EditarCarrera.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FycmVyYVxFZGl0YXJDYXJyZXJhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Carrera/EliminarCarrera.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FycmVyYVxFbGltaW5hckNhcnJlcmEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Escuderias/CrearEscuderia.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjdWRlcmlhc1xDcmVhckVzY3VkZXJpYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Escuderias/DetallesEscuderia.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjdWRlcmlhc1xEZXRhbGxlc0VzY3VkZXJpYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Escuderias/EditarEscuderia.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjdWRlcmlhc1xFZGl0YXJFc2N1ZGVyaWEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Escuderias/EliminarEscuderia.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjdWRlcmlhc1xFbGltaW5hckVzY3VkZXJpYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Escuderias/Escuderias.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjdWRlcmlhc1xFc2N1ZGVyaWFzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/FetchData.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hEYXRhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Pilotos/CrearPiloto.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGlsb3Rvc1xDcmVhclBpbG90by5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Pilotos/DetallesPiloto.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGlsb3Rvc1xEZXRhbGxlc1BpbG90by5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Pilotos/EditarPiloto.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGlsb3Rvc1xFZGl0YXJQaWxvdG8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Pilotos/EliminarPiloto.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGlsb3Rvc1xFbGltaW5hclBpbG90by5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Pages/Pilotos/Pilotos.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGlsb3Rvc1xQaWxvdG9zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-arbifps85e
+
+[C:/Users/unail/source/repos/F1Blazor2/F1Blazor2/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-cxehsijcta

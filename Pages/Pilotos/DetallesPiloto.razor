@@ -1,0 +1,59 @@
+﻿@page "/DetallesPiloto/{id:int}"
+
+<h2>Detalles de @piloto.Nombre</h2>
+
+<table class="table">
+    <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Nacionalidad</th>
+        <th>Edad</th>
+        <th>Foto</th>
+        <th>Poles</th>
+        <th>Victorias</th>
+        <th>VueltasRapidas</th>
+        <th>Puntos</th>
+        <th>IdEscuderia</th>
+        <th>Dorsal</th>
+    </tr>
+    <tr>
+        <td>@piloto.Nombre</td>
+        <td>@piloto.Apellido</td>
+        <td>@piloto.Nacionalidad</td>
+        <td>@piloto.Edad</td>
+        <td>@piloto.Foto</td>
+        <td>@piloto.Poles</td>
+        <td>@piloto.Victorias</td>
+        <td>@piloto.VueltasRapidas</td>
+        <td>@piloto.Puntos</td>
+        <td>@piloto.IdEscuderia</td>
+        <td>@piloto.Dorsal</td>
+    </tr>
+</table>
+<br />
+<a href="/EditarPiloto/@Id">Editar</a>
+<a href="/EliminarPiloto/@Id">Eliminar</a>
+<a href="/Pilotos">Volver a los Pilotos</a>
+
+
+@code {
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private PilotoDTO piloto { get; set; } = new PilotoDTO();
+
+    private async Task GetPiloto()
+    {
+        piloto = await _api.GetPiloto(Id);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPiloto();
+    }
+
+
+}

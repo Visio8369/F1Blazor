@@ -1,0 +1,44 @@
+﻿@page "/Carreras"
+
+<h3>Estas son las carreras de 2023</h3>
+
+<a href ="/CrearCarrera"><h3>Crear Carrera</h3></a>
+
+@foreach(CarreraEnteraDTO carrera in carreras)
+{
+    <hr>
+    <div>
+        <p>@carrera.Nombre</p>
+        <p>@carrera.Fecha</p>
+        <img src="data:image/png;base64, @ByteToImagen(carrera.Bandera)" width="600px" height="400px">
+
+        <a href="/DetallesCarrera/@carrera.Id">Detalles</a>
+        <a href="/EditarCarrera/@carrera.Id">Editar</a>
+        <a href="/EliminarCarrera/@carrera.Id">Eliminar</a>
+    </div>
+}
+
+@code {
+
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    private List<CarreraEnteraDTO> carreras;
+
+    private async Task GetCarreras()
+    {
+        carreras = await _api.GetCarreras();
+    }
+
+    private string ByteToImagen(byte[] imagen)
+    {
+        string base64String = Convert.ToBase64String(imagen);
+        return base64String;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetCarreras();
+    }
+
+}

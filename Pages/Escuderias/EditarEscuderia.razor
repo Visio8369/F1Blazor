@@ -1,0 +1,153 @@
+﻿@page "/EditarEscuderia/{id:int}"
+
+<style>
+    .oculto {
+        display: none
+    }
+
+    .visible {
+        display: inherit
+    }
+</style>
+
+<h2>Editar @escuderiaAntes.Nombre</h2>
+
+<div class="alert alert-success @GoodMessageCss" role="alert">
+    <h4 class="alert-heading">Escuderia actualizada correctamente</h4>
+    <a href="/Escuderias">Volver a las Escuderias</a>
+</div>
+
+<div class="alert alert-warning @BadMessageCss" role="alert">
+    <h4 class="alert-heading">No se ha podido actualizar la escuderia</h4>
+    <button type="submit" onclick="@VolverAIntertarlo">Volver a intentarlo</button>
+    <a href="/Escuderias">Volver a las escuderias</a>
+</div>
+
+<div class="@FormCss">
+    <EditForm Model="escuderiaAntes" OnSubmit="@UpdateEscuderia">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <br />
+        <div class="form-group">
+            <label for="Nombre" class="control-label">Nombre :</label>
+            <InputText @bind-Value=escuderiaAntes.Nombre id="Nombre"></InputText>
+            <ValidationMessage For="(()=>escuderiaAntes.Nombre)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Apellido" class="control-label">TeamPrincipal :</label>
+            <InputText @bind-Value=escuderiaAntes.TeamPrincipal id="TeamPrincipal"></InputText>
+            <ValidationMessage For="(()=>escuderiaAntes.TeamPrincipal)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Nacionalidad" class="control-label">Nacionalidad :</label>
+            <InputText @bind-Value=escuderiaAntes.Nacionalidad id="Nacionalidad"></InputText>
+            <ValidationMessage For="(()=>escuderiaAntes.Nacionalidad)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label asp-for="Foto" class="control-label">Escudo :</label>
+            <InputFile OnChange="InputFileToArray" id="Escudo"></InputFile>
+            <ValidationMessage For="(()=>escuderiaAntes.Escudo)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Poles" class="control-label">Poles :</label>
+            <InputNumber @bind-Value=escuderiaAntes.Poles id="Poles"></InputNumber>
+            <ValidationMessage For="(()=>escuderiaAntes.Poles)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Victorias" class="control-label">Victorias :</label>
+            <InputNumber @bind-Value=escuderiaAntes.Victorias id="Victorias"></InputNumber>
+            <ValidationMessage For="(()=>escuderiaAntes.Victorias)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="VueltasRapidas" class="control-label">VueltasRapidas :</label>
+            <InputNumber @bind-Value=escuderiaAntes.VueltasRapidas id="VueltasRapidas"></InputNumber>
+            <ValidationMessage For="(()=>escuderiaAntes.VueltasRapidas)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Puntos" class="control-label">Puntos :</label>
+            <InputNumber @bind-Value=escuderiaAntes.Puntos id="Puntos"></InputNumber>
+            <ValidationMessage For="(()=>escuderiaAntes.Puntos)"></ValidationMessage>
+        </div>
+        <br />
+        <button type="submit">Actualizar</button>
+        <br />
+        <a href="/Escuderias">Volver a los Pilotos</a>
+    </EditForm>
+</div>
+
+@code {
+
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private EscuderiumDTOUpdate escuderia { get; set; } = new EscuderiumDTOUpdate();
+
+    private EscuderiumDTO escuderiaAntes { get; set; } = new EscuderiumDTO();
+
+    private string FormCss = "visible";
+    private string GoodMessageCss = "oculto";
+    private string BadMessageCss = "oculto";
+
+    private async Task GetEscuderia()
+    {
+        escuderiaAntes = await _api.GetEscuderia(Id);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetEscuderia();
+    }
+
+    private async Task UpdateEscuderia()
+    {
+        escuderia.Nombre = escuderiaAntes.Nombre;
+        escuderia.TeamPrincipal = escuderiaAntes.TeamPrincipal;
+        escuderia.Escudo = escuderiaAntes.Escudo;
+        escuderia.Poles = escuderiaAntes.Poles;
+        escuderia.Victorias = escuderiaAntes.Victorias;
+        escuderia.VueltasRapidas = escuderiaAntes.VueltasRapidas;
+        escuderia.Puntos = escuderiaAntes.Puntos;
+        bool resultado = await _api.ActualizarEscuderia(Id, escuderia);
+
+        if (resultado)
+        {
+            FormCss = "oculto";
+            GoodMessageCss = "visible";
+        }
+        else
+        {
+            FormCss = "oculto";
+            BadMessageCss = "visible";
+        }
+    }
+
+    private void VolverAIntertarlo()
+    {
+        FormCss = "visible";
+        BadMessageCss = "oculto";
+    }
+
+    private async Task InputFileToArray(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        byte[] arrayFoto = new byte[file.Size];
+
+        using (MemoryStream ms = new MemoryStream(arrayFoto))
+        {
+            await file.OpenReadStream().CopyToAsync(ms);
+        }
+
+        escuderia.Escudo = arrayFoto;
+    }
+
+}

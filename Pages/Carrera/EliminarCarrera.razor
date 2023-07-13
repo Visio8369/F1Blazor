@@ -1,0 +1,96 @@
+﻿@page "/EliminarCarrera/{Id:int}"
+
+<style>
+    .oculto {
+        display: none
+    }
+
+    .visible {
+        display: inherit
+    }
+</style>
+
+<h2>Eliminar @carrera.Nombre</h2>
+
+<div class="alert alert-success @GoodMessageCss" role="alert">
+    <h4 class="alert-heading">Carrera eliminada correctamente</h4>
+    <a href="/Carreras">Volver a las carreras</a>
+</div>
+
+<div class="alert alert-warning @BadMessageCss" role="alert">
+    <h4 class="alert-heading">No se ha podido eliminar la carrera</h4>
+    <button type="submit" onclick="@VolverAIntertarlo">Volver a intentarlo</button>
+    <a href="/Carreras">Volver a las carreras</a>
+</div>
+
+<div class="@FormCss">
+    <table class="table">
+        <tr>
+            <th>Nombre</th>
+            <th>Pais</th>
+            <th>Fecha</th>
+            <th>Bandera</th>
+        </tr>
+        <tr>
+            <td>@carrera.Nombre</td>
+            <td>@carrera.Pais</td>
+            <td>@carrera.Fecha</td>
+            <td>@carrera.Bandera</td>
+        </tr>
+    </table>
+    <br />
+
+    <button onclick="@DeleteCarrera">Eliminar</button>
+    <a href="/Carreras">Volver a las carreras</a>
+
+</div>
+
+@code {
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private string FormCss { get; set; } = "visible";
+
+    private string GoodMessageCss { get; set; } = "oculto";
+
+    private string BadMessageCss = "oculto";
+
+    private CarreraDTO carrera { get; set; } = new CarreraDTO();
+
+    private async Task GetCarrera()
+    {
+        carrera = await _api.GetCarrera(Id);
+    }
+
+    private async Task DeleteCarrera()
+    {
+        bool resultado = await _api.EliminarCarrera(Id);
+        if (resultado)
+        {
+            FormCss = "oculto";
+            GoodMessageCss = "visible";
+        }
+        else
+        {
+            FormCss = "oculto";
+            BadMessageCss = "visible";
+        }
+    }
+
+    private void VolverAIntertarlo()
+    {
+        FormCss = "visible";
+        BadMessageCss = "oculto";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetCarrera();
+    }
+
+
+}
+

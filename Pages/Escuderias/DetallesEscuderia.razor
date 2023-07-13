@@ -1,0 +1,53 @@
+﻿@page "/DetallesEscuderia/{id:int}"
+
+<h2>Detalles de @escuderia.Nombre</h2>
+
+<table class="table">
+    <tr>
+        <th>Nombre</th>
+        <th>Team Principal</th>
+        <th>Nacionalidad</th>
+        <th>Escudo</th>
+        <th>Poles</th>
+        <th>Victorias</th>
+        <th>VueltasRapidas</th>
+        <th>Puntos</th>
+    </tr>
+    <tr>
+        <td>@escuderia.Nombre</td>
+        <td>@escuderia.TeamPrincipal</td>
+        <td>@escuderia.Nacionalidad</td>
+        <td>@escuderia.Escudo</td>
+        <td>@escuderia.Poles</td>
+        <td>@escuderia.Victorias</td>
+        <td>@escuderia.VueltasRapidas</td>
+        <td>@escuderia.Puntos</td>
+    </tr>
+</table>
+<br />
+<a href="/EditarEscuderia/@Id">Editar</a>
+<a href="/EliminarEscuderia/@Id">Eliminar</a>
+<a href="/Escuderias">Volver a las Escuderias</a>
+
+
+@code {
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private EscuderiumDTO escuderia { get; set; } = new EscuderiumDTO();
+
+    private async Task GetEscuderia()
+    {
+        escuderia = await _api.GetEscuderia(Id);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetEscuderia();
+    }
+
+
+}

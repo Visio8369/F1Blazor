@@ -1,0 +1,52 @@
+﻿@page "/Pilotos"
+
+<h3>Estos son los pilotos de 2023</h3>
+
+<a href="/CrearPiloto"><h3>Crear Piloto</h3></a>
+
+@foreach (PilotoEnteroDTO piloto in pilotos)
+{
+    <hr>
+    <div>
+        <p>@piloto.Nombre</p>
+        <p>@piloto.Apellido</p>
+        <p>@piloto.Nacionalidad</p>
+        <p>@piloto.Edad</p>
+        <img src="data:image/png;base64, @ByteToImagen(piloto.Foto)" width="600px" height="400px">
+        <p>@piloto.Poles</p>
+        <p>@piloto.Victorias</p>
+        <p>@piloto.VueltasRapidas</p>
+        <p>@piloto.Puntos</p>
+        <p>@piloto.IdEscuderia</p>
+        <p>@piloto.Dorsal</p>
+
+        <a href="/DetallesPiloto/@piloto.Id">Detalles</a>
+        <a href="/EditarPiloto/@piloto.Id">Editar</a>
+        <a href="/EliminarPiloto/@piloto.Id">Eliminar</a>
+    </div>
+}
+
+@code {
+
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    private List<PilotoEnteroDTO> pilotos;
+
+    private async Task GetPilotos()
+    {
+        pilotos = await _api.GetPilotos();
+    }
+
+    private string ByteToImagen(byte[] imagen)
+    {
+        string base64String = Convert.ToBase64String(imagen);
+        return base64String;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPilotos();
+    }
+
+}

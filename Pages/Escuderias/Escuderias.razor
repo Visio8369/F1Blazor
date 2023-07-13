@@ -1,0 +1,49 @@
+﻿@page "/Escuderias"
+
+<h3>Estas son las escuderias de 2023</h3>
+
+<a href="/CrearEscuderia"><h3>Crear Escuderia</h3></a>
+
+@foreach (EscuderiumEnteroDTO Escuderia in escuderias)
+{
+    <hr>
+    <div>
+        <p>@Escuderia.Nombre</p>
+        <p>@Escuderia.TeamPrincipal</p>
+        <p>@Escuderia.Nacionalidad</p>
+        <img src="data:image/png;base64, @ByteToImagen(Escuderia.Escudo)" width="600px" height="400px">
+        <p>@Escuderia.Victorias</p>
+        <p>@Escuderia.Poles</p>
+        <p>@Escuderia.Puntos</p>
+        <p>@Escuderia.VueltasRapidas</p>
+
+        <a href="/DetallesEscuderia/@Escuderia.Id">Detalles</a>
+        <a href="/EditarEscuderia/@Escuderia.Id">Editar</a>
+        <a href="/EliminarEscuderia/@Escuderia.Id">Eliminar</a>
+    </div>
+}
+
+@code {
+
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    private List<EscuderiumEnteroDTO> escuderias;
+
+    private async Task GetEscuderias()
+    {
+        escuderias = await _api.GetEscuderias();
+    }
+
+    private string ByteToImagen(byte[] imagen)
+    {
+        string base64String = Convert.ToBase64String(imagen);
+        return base64String;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetEscuderias();
+    }
+
+}

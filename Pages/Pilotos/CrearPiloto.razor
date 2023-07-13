@@ -1,0 +1,144 @@
+﻿@page "/CrearPiloto"
+
+<style>
+    .oculto{display:none}
+    .visible{display:inherit}
+</style>
+
+<h3>Crear Piloto</h3>
+
+<div class="alert alert-success @GoodMessageCss" role="alert">
+    <h4 class="alert-heading">Piloto creada correctamente</h4>
+    <a href="/Pilotos">Volver a las pilotos</a>
+</div>
+
+<div class="alert alert-warning @BadMessageCss" role="alert">
+    <h4 class="alert-heading">No se ha podido crear el piloto</h4>
+    <button type="submit" onclick="@VolverAIntertarlo">Volver a intentarlo</button>
+    <a href="/Pilotos">Volver a las pilotos</a>
+</div>
+
+<div class="@FormCss">
+<EditForm Model="piloto" OnSubmit="@CreatePiloto">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <br />
+    <div class="form-group">
+        <label for="Nombre" class="control-label">Nombre :</label>
+        <InputText @bind-Value=piloto.Nombre id="Nombre"></InputText>
+        <ValidationMessage For="(()=>piloto.Nombre)"></ValidationMessage>
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="Apellido" class="control-label">Apellido :</label>
+        <InputText @bind-Value=piloto.Apellido id="Apellido"></InputText>
+        <ValidationMessage For="(()=>piloto.Apellido)"></ValidationMessage>
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="Nacionalidad" class="control-label">Nacionalidad :</label>
+        <InputText @bind-Value=piloto.Nacionalidad id="Nacionalidad"></InputText>
+        <ValidationMessage For="(()=>piloto.Nacionalidad)"></ValidationMessage>
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="Edad" class="control-label">Edad :</label>
+        <InputNumber @bind-Value=piloto.Edad id="Edad"></InputNumber>
+        <ValidationMessage For="(()=>piloto.Edad)"></ValidationMessage>
+    </div>
+    <br />
+    <div class="form-group">
+        <label asp-for="Foto" class="control-label">Foto :</label>
+        <InputFile OnChange="InputFileToArray" id="foto"></InputFile>
+        <ValidationMessage For="(()=>piloto.Foto)"></ValidationMessage>
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="Poles" class="control-label">Poles :</label>
+        <InputNumber @bind-Value=piloto.Poles id="Poles"></InputNumber>
+        <ValidationMessage For="(()=>piloto.Poles)"></ValidationMessage>
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="Victorias" class="control-label">Victorias :</label>
+        <InputNumber @bind-Value=piloto.Victorias id="Victorias"></InputNumber>
+        <ValidationMessage For="(()=>piloto.Victorias)"></ValidationMessage>
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="VueltasRapidas" class="control-label">VueltasRapidas :</label>
+        <InputNumber @bind-Value=piloto.VueltasRapidas id="VueltasRapidas"></InputNumber>
+        <ValidationMessage For="(()=>piloto.VueltasRapidas)"></ValidationMessage>
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="Puntos" class="control-label">Puntos :</label>
+        <InputNumber @bind-Value=piloto.Puntos id="Puntos"></InputNumber>
+        <ValidationMessage For="(()=>piloto.Puntos)"></ValidationMessage>
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="IdEscuderia" class="control-label">IdEscuderia :</label>
+        <InputNumber @bind-Value=piloto.IdEscuderia id="IdEscuderia"></InputNumber>
+        <ValidationMessage For="(()=>piloto.IdEscuderia)"></ValidationMessage>
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="Dorsal" class="control-label">Dorsal :</label>
+        <InputNumber @bind-Value=piloto.Dorsal id="Dorsal"></InputNumber>
+        <ValidationMessage For="(()=>piloto.Dorsal)"></ValidationMessage>
+    </div>
+    <br />
+    <button type="submit">Crear</button>
+    <br />
+    <a href="/Pilotos">Volver a los Pilotos</a>
+</EditForm>
+</div>
+
+
+@code {
+
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    private CrearPilotoDTO piloto { get; set; } = new CrearPilotoDTO();
+
+    private string FormCss = "visible";
+    private string GoodMessageCss = "oculto";
+    private string BadMessageCss = "oculto";
+
+    private async Task CreatePiloto()
+    {
+        bool resultado = await _api.CrearPiloto(piloto);
+
+        if (resultado)
+        {
+            FormCss = "oculto";
+            GoodMessageCss = "visible";
+        }
+        else
+        {
+            FormCss = "oculto";
+            BadMessageCss = "visible";
+        }
+    }
+
+    private void VolverAIntertarlo()
+    {
+        FormCss = "visible";
+        BadMessageCss = "oculto";
+    }
+
+    private async Task InputFileToArray(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        byte[] arrayFoto = new byte[file.Size];
+
+        using (MemoryStream ms = new MemoryStream(arrayFoto))
+        {
+            await file.OpenReadStream().CopyToAsync(ms);
+        }
+
+        piloto.Foto = arrayFoto;
+    }
+}

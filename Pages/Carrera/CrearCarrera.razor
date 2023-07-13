@@ -1,0 +1,114 @@
+﻿@page "/CrearCarrera"
+
+<style>
+    .oculto{display:none}
+
+    .visible{display:inherit}
+</style>
+
+<h3>Crear Carrera</h3>
+
+<div class="alert alert-success @GoodMessageCss" role="alert">
+    <h4 class="alert-heading">Carrera creada correctamente</h4>
+    <a href="/Carreras">Volver a las carreras</a>
+</div>
+
+<div class="alert alert-warning @BadMessageCss" role="alert">
+    <h4 class="alert-heading">No se ha podido crear la carrera</h4>
+    <button type="submit" onclick="@VolverAIntertarlo">Volver a intentarlo</button>
+    <a href="/Carreras">Volver a las carreras</a>
+</div>
+
+<div class="@FormCss">
+    <EditForm Model="carrera" OnSubmit="@CreateCarrera">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <br />
+        <div class="form-group row">
+            <label for="Nombre" class="control-label">Nombre</label>
+            <InputText id="Nombre" class="form-control" @bind-Value=carrera.Nombre></InputText>
+            <ValidationMessage For="@(()=> carrera.Nombre)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label for="Pais" class="control-label">Pais</label>
+            <InputText id="Pais" class="form-control" @bind-Value=carrera.Pais></InputText>
+            <ValidationMessage For="@(()=> carrera.Pais)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label for="Fecha" class="control-label">Fecha</label>
+            <InputDate id="Fecha" class="form-control" @bind-Value=carrera.Fecha></InputDate>
+            <ValidationMessage For="@(()=> carrera.Fecha)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label for="Bandera" class="control-label">Bandera</label>
+            <InputFile id="Bandera" class="form-control" accept=".png, .jpg, .jpeg" OnChange="@CargarBandera" @bind-Value=Bandera></InputFile>
+            <ValidationMessage For="@(()=> carrera.Bandera)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Crear</button>
+        </div>
+        <br />
+        <a href="/Carreras">Volver a las carreras</a>
+    </EditForm>
+</div>
+
+@code {
+
+    [Inject]
+    private IServicioApi _api  { get; set; }
+
+    private CrearCarreraDTO carrera { get; set; } = new CrearCarreraDTO();
+
+    private InputFile Bandera;
+
+    private string FormCss { get; set; } = "visible";
+
+    private string GoodMessageCss { get; set; } = "oculto";
+
+    private string BadMessageCss { get; set; } = "oculto";
+
+    private async Task CreateCarrera()
+    {
+        if (carrera.Nombre is null || carrera.Pais is null || carrera.Bandera is null)
+        {
+            FormCss = "oculto";
+            BadMessageCss = "visible";
+        }
+
+        bool resultado = await _api.CrearCarrera(carrera);
+        if (resultado)
+        {
+            FormCss = "oculto";
+            GoodMessageCss = "visible";
+        }
+        else
+        {
+            FormCss = "oculto";
+            BadMessageCss = "visible";
+        }
+    }
+
+    private async Task CargarBandera(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        byte[] arrayBandera = new byte[file.Size];
+
+        using (MemoryStream ms = new MemoryStream(arrayBandera))
+        {
+            await file.OpenReadStream().CopyToAsync(ms);
+        }
+
+        carrera.Bandera = arrayBandera;
+    }
+
+    private void VolverAIntertarlo()
+    {
+        FormCss = "visible";
+        BadMessageCss = "oculto";
+    }
+
+}

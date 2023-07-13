@@ -1,0 +1,107 @@
+﻿@page "/EditarCarrera/{id:int}"
+
+<style>
+    .oculto {
+        display: none
+    }
+
+    .visible {
+        display: inherit
+    }
+</style>
+
+<h3>Editar @carreraAntes.Nombre</h3>
+
+<div class="alert alert-success @GoodMessageCss" role="alert">
+    <h4 class="alert-heading">Carrera actualizada correctamente</h4>
+    <a href="/Carreras">Volver a las carreras</a>
+</div>
+
+<div class="alert alert-warning @BadMessageCss" role="alert">
+    <h4 class="alert-heading">No se ha podido actualizar la carrera</h4>
+    <button type="submit" onclick="@VolverAIntertarlo">Volver a intentarlo</button>
+    <a href="/Carreras">Volver a las carreras</a>
+</div>
+
+<div class="@FormCss">
+    <EditForm Model="carreraAntes" OnSubmit="@UpdateCarrera">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <br />
+        <div class="form-group">
+            <label for="Nombre" class="control-label">Nombre</label>
+            <InputText id="Nombre" @bind-Value=carreraAntes.Nombre></InputText>
+            <ValidationMessage For="(()=> carreraAntes.Nombre)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Fecha" class="control-label">Fecha</label>
+            <InputDate id="Fecha" @bind-Value=carreraAntes.Fecha></InputDate>
+            <ValidationMessage For="(()=> carreraAntes.Fecha)"></ValidationMessage>
+        </div>
+        <br />
+        <button type="submit">Editar</button>
+        <br />
+        <a href="/Carreras">Volver a las carreras</a>
+    </EditForm>
+</div>
+
+@code {
+
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private CarreraDTOUpdate carrera { get; set; } = new CarreraDTOUpdate();
+
+    private CarreraDTO carreraAntes { get; set; } = new CarreraDTO();
+
+    private string FormCss { get; set; } = "visible";
+
+    private string GoodMessageCss { get; set; } = "oculto";
+
+    private string BadMessageCss { get; set; } = "oculto";
+
+    private async Task GetCarrera()
+    {
+        carreraAntes = await _api.GetCarrera(Id);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetCarrera();
+    }
+
+    private async Task UpdateCarrera()
+    {
+
+        if (carrera.Nombre is null)
+        {
+            FormCss = "oculto";
+            BadMessageCss = "visible";
+        }
+
+        carrera.Nombre = carreraAntes.Nombre;
+        carrera.Fecha = carreraAntes.Fecha;
+
+        bool resultado = await _api.ActualizarCarrera(Id,carrera);
+        if (resultado)
+        {
+            FormCss = "oculto";
+            GoodMessageCss = "visible";
+        }
+        else
+        {
+            FormCss = "oculto";
+            BadMessageCss = "visible";
+        }
+    }
+
+    private void VolverAIntertarlo()
+    {
+        FormCss = "visible";
+        BadMessageCss = "oculto";
+    }
+}
+

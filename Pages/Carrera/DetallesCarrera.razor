@@ -1,0 +1,43 @@
+﻿@page "/DetallesCarrera/{Id:int}"
+
+<h2>Detalles de la carrera @carrera.Nombre</h2>
+
+<table class="table">
+    <tr>
+        <th>Nombre</th>
+        <th>Pais</th>
+        <th>Fecha</th>
+        <th>Bandera</th>
+    </tr>
+    <tr>
+        <td>@carrera.Nombre</td>
+        <td>@carrera.Pais</td>
+        <td>@carrera.Fecha</td>
+        <td>@carrera.Bandera</td>
+    </tr>
+</table>
+
+<a href="/EditarCarrera/@Id">Editar</a>
+<a href="/EliminarCarrera/@Id">Eliminar</a>
+<a href="/Carreras">Volver</a>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    private CarreraDTO carrera;
+
+    private async Task<CarreraDTO> GetCarrera(int id)
+    {
+        return carrera = await _api.GetCarrera(id);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetCarrera(Id);
+    }
+}

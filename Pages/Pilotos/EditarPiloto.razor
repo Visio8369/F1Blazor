@@ -1,0 +1,154 @@
+﻿@page "/EditarPiloto/{id:int}"
+
+<style>
+    .oculto {
+        display: none
+    }
+
+    .visible {
+        display: inherit
+    }
+</style>
+
+<h2>Editar @pilotoAntes.Nombre</h2>
+
+<div class="alert alert-success @GoodMessageCss" role="alert">
+    <h4 class="alert-heading">Piloto actualizado correctamente</h4>
+    <a href="/Pilotos">Volver a los pilotos</a>
+</div>
+
+<div class="alert alert-warning @BadMessageCss" role="alert">
+    <h4 class="alert-heading">No se ha podido actualizar el piloto</h4>
+    <button type="submit" onclick="@VolverAIntertarlo">Volver a intentarlo</button>
+    <a href="/Pilotos">Volver a los pilotos</a>
+</div>
+
+<div class="@FormCss">
+    <EditForm Model="pilotoAntes" OnSubmit="@UpdatePiloto">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <br />
+        <div class="form-group">
+            <label for="Edad" class="control-label">Edad :</label>
+            <InputNumber @bind-Value=pilotoAntes.Edad id="Edad"></InputNumber>
+            <ValidationMessage For="(()=>pilotoAntes.Edad)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label asp-for="Foto" class="control-label">Foto :</label>
+            <InputFile OnChange="InputFileToArray" id="foto"></InputFile>
+            <ValidationMessage For="(()=>pilotoAntes.Foto)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Poles" class="control-label">Poles :</label>
+            <InputNumber @bind-Value=pilotoAntes.Poles id="Poles"></InputNumber>
+            <ValidationMessage For="(()=>pilotoAntes.Poles)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Victorias" class="control-label">Victorias :</label>
+            <InputNumber @bind-Value=pilotoAntes.Victorias id="Victorias"></InputNumber>
+            <ValidationMessage For="(()=>pilotoAntes.Victorias)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="VueltasRapidas" class="control-label">VueltasRapidas :</label>
+            <InputNumber @bind-Value=pilotoAntes.VueltasRapidas id="VueltasRapidas"></InputNumber>
+            <ValidationMessage For="(()=>pilotoAntes.VueltasRapidas)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Puntos" class="control-label">Puntos :</label>
+            <InputNumber @bind-Value=pilotoAntes.Puntos id="Puntos"></InputNumber>
+            <ValidationMessage For="(()=>pilotoAntes.Puntos)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="IdEscuderia" class="control-label">IdEscuderia :</label>
+            <InputNumber @bind-Value=pilotoAntes.IdEscuderia id="IdEscuderia"></InputNumber>
+            <ValidationMessage For="(()=>pilotoAntes.IdEscuderia)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Dorsal" class="control-label">Dorsal :</label>
+            <InputNumber @bind-Value=pilotoAntes.Dorsal id="Dorsal"></InputNumber>
+            <ValidationMessage For="(()=>pilotoAntes.Dorsal)"></ValidationMessage>
+        </div>
+        <br />
+
+        <button type="submit">Actualizar</button>
+        <a href="/Pilotos">Volver a los Pilotos</a>
+    </EditForm>
+</div>
+
+@code {
+
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private PilotoToUpdateDTO piloto { get; set; } = new PilotoToUpdateDTO();
+
+    private PilotoDTO pilotoAntes { get; set; } = new PilotoDTO();
+
+    private string FormCss = "visible";
+    private string GoodMessageCss = "oculto";
+    private string BadMessageCss = "oculto";
+
+    private async Task GetPiloto()
+    {
+        pilotoAntes = await _api.GetPiloto(Id);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPiloto();
+    }
+
+    private async Task UpdatePiloto()
+    {
+        piloto.Edad = pilotoAntes.Edad;
+        piloto.Foto = pilotoAntes.Foto;
+        piloto.Poles = pilotoAntes.Poles;
+        piloto.Victorias = pilotoAntes.Victorias;
+        piloto.VueltasRapidas = pilotoAntes.VueltasRapidas;
+        piloto.Puntos = pilotoAntes.Puntos;
+        piloto.IdEscuderia = pilotoAntes.IdEscuderia;
+        piloto.Dorsal = pilotoAntes.Dorsal;
+        bool resultado = await _api.ActualizarPiloto(Id,piloto);
+
+        if (resultado)
+        {
+            FormCss = "oculto";
+            GoodMessageCss = "visible";
+        }
+        else
+        {
+            FormCss = "oculto";
+            BadMessageCss = "visible";
+        }
+    }
+
+    private void VolverAIntertarlo()
+    {
+        FormCss = "visible";
+        BadMessageCss = "oculto";
+    }
+
+    private async Task InputFileToArray(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        byte[] arrayFoto = new byte[file.Size];
+
+        using (MemoryStream ms = new MemoryStream(arrayFoto))
+        {
+            await file.OpenReadStream().CopyToAsync(ms);
+        }
+
+        piloto.Foto = arrayFoto;
+    }
+
+}

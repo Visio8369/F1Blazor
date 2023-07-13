@@ -1,0 +1,101 @@
+﻿@page "/EliminarEscuderia/{Id:int}"
+
+<style>
+    .oculto {
+        display: none
+    }
+
+    .visible {
+        display: inherit
+    }
+</style>
+
+<h2>Eliminar @escuderia.Nombre</h2>
+
+<div class="alert alert-success @GoodMessageCss" role="alert">
+    <h4 class="alert-heading">Escuderia eliminada correctamente</h4>
+    <a href="/Escuderias">Volver a las escuderias</a>
+</div>
+
+<div class="alert alert-warning @BadMessageCss" role="alert">
+    <h4 class="alert-heading">No se ha podido eliminar la escuderia</h4>
+    <button type="submit" onclick="@VolverAIntertarlo">Volver a intentarlo</button>
+    <a href="/Escuderias">Volver a las escuderias</a>
+</div>
+
+<div class="@FormCss">
+    <table class="table">
+        <tr>
+            <th>Nombre</th>
+            <th>Team Principal</th>
+            <th>Nacionalidad</th>
+            <th>Escudo</th>
+            <th>Poles</th>
+            <th>Victorias</th>
+            <th>VueltasRapidas</th>
+            <th>Puntos</th>
+        </tr>
+        <tr>
+            <td>@escuderia.Nombre</td>
+            <td>@escuderia.TeamPrincipal</td>
+            <td>@escuderia.Nacionalidad</td>
+            <td>@escuderia.Escudo</td>
+            <td>@escuderia.Poles</td>
+            <td>@escuderia.Victorias</td>
+            <td>@escuderia.VueltasRapidas</td>
+            <td>@escuderia.Puntos</td>
+        </tr>
+    </table>
+    <br />
+
+    <button onclick="@DeleteEscuderia">Eliminar</button>
+    <a href="/Escuderias">Volver a las Escuderias</a>
+
+</div>
+
+@code {
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private string FormCss { get; set; } = "visible";
+
+    private string GoodMessageCss { get; set; } = "oculto";
+
+    private string BadMessageCss = "oculto";
+
+    private EscuderiumDTO escuderia { get; set; } = new EscuderiumDTO();
+
+    private async Task GetEscuderia()
+    {
+        escuderia = await _api.GetEscuderia(Id);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetEscuderia();
+    }
+
+    private async Task DeleteEscuderia()
+    {
+        bool resultado = await _api.EliminarEscuderia(Id);
+        if (resultado)
+        {
+            FormCss = "oculto";
+            GoodMessageCss = "visible";
+        }
+        else
+        {
+            FormCss = "oculto";
+            BadMessageCss = "visible";
+        }
+    }
+
+    private void VolverAIntertarlo()
+    {
+        FormCss = "visible";
+        BadMessageCss = "oculto";
+    }
+}

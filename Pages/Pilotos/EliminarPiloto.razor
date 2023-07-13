@@ -1,0 +1,109 @@
+﻿@page "/EliminarPiloto/{id:int}"
+
+<style>
+    .oculto {
+        display: none
+    }
+
+    .visible {
+        display: inherit
+    }
+</style>
+
+<h2>Eliminar @piloto.Nombre</h2>
+
+<div class="alert alert-success @GoodMessageCss" role="alert">
+    <h4 class="alert-heading">Piloto eliminado correctamente</h4>
+    <a href="/Pilotos">Volver a los pilotos</a>
+</div>
+
+<div class="alert alert-warning @BadMessageCss" role="alert">
+    <h4 class="alert-heading">No se ha podido eliminar el piloto</h4>
+    <button type="submit" onclick="@VolverAIntertarlo">Volver a intentarlo</button>
+    <a href="/Pilotos">Volver a los pilotos</a>
+</div>
+
+<div class="@FormCss">
+<table class="table">
+    <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Nacionalidad</th>
+        <th>Edad</th>
+        <th>.Foto</th>
+        <th>Poles</th>
+        <th>Victorias</th>
+        <th>VueltasRapidas</th>
+        <th>Puntos</th>
+        <th>IdEscuderia</th>
+        <th>Dorsal</th>
+    </tr>
+    <tr>
+        <td>@piloto.Nombre</td>
+        <td>@piloto.Apellido</td>
+        <td>@piloto.Nacionalidad</td>
+        <td>@piloto.Edad</td>
+        <td>@piloto.Foto</td>
+        <td>@piloto.Poles</td>
+        <td>@piloto.Victorias</td>
+        <td>@piloto.VueltasRapidas</td>
+        <td>@piloto.Puntos</td>
+        <td>@piloto.IdEscuderia</td>
+        <td>@piloto.Dorsal</td>
+    </tr>
+</table>
+<br />
+
+<button onclick="@DeletePiloto">Eliminar</button>
+<a href="/Pilotos">Volver a los Pilotos</a>
+
+</div>
+
+@code {
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private string FormCss { get; set; } = "visible";
+
+    private string GoodMessageCss { get; set; } = "oculto";
+
+    private string BadMessageCss = "oculto";
+
+    private PilotoDTO piloto { get; set; } = new PilotoDTO();
+
+    private async Task GetPiloto()
+    {
+        piloto = await _api.GetPiloto(Id);
+    }
+
+    private async Task DeletePiloto()
+    {
+        bool resultado = await _api.EliminarPiloto(Id);
+        if (resultado)
+        {
+            FormCss = "oculto";
+            GoodMessageCss = "visible";
+        }
+        else
+        {
+            FormCss = "oculto";
+            BadMessageCss = "visible";
+        }
+    }
+
+    private void VolverAIntertarlo()
+    {
+        FormCss = "visible";
+        BadMessageCss = "oculto";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPiloto();
+    }
+
+
+}

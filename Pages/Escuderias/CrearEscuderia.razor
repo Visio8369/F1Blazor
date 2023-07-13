@@ -1,0 +1,132 @@
+﻿@page "/CrearEscuderia"
+
+<style>
+    .oculto {
+        display: none
+    }
+
+    .visible {
+        display: inherit
+    }
+</style>
+
+<h3>Crear Escuderia</h3>
+
+<div class="alert alert-success @GoodMessageCss" role="alert">
+    <h4 class="alert-heading">Escuderia creada correctamente</h4>
+    <a href="/Escuderias">Volver a las pilotos</a>
+</div>
+
+<div class="alert alert-warning @BadMessageCss" role="alert">
+    <h4 class="alert-heading">No se ha podido crear la escuderia</h4>
+    <button type="submit" onclick="@VolverAIntertarlo">Volver a intentarlo</button>
+    <a href="/Escuderias">Volver a las pilotos</a>
+</div>
+
+<div class="@FormCss">
+    <EditForm Model="escuderia" OnSubmit="@CreateEscuderia">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <br />
+        <div class="form-group">
+            <label for="Nombre" class="control-label">Nombre :</label>
+            <InputText @bind-Value=escuderia.Nombre id="Nombre"></InputText>
+            <ValidationMessage For="(()=>escuderia.Nombre)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Apellido" class="control-label">TeamPrincipal :</label>
+            <InputText @bind-Value=escuderia.TeamPrincipal id="TeamPrincipal"></InputText>
+            <ValidationMessage For="(()=>escuderia.TeamPrincipal)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Nacionalidad" class="control-label">Nacionalidad :</label>
+            <InputText @bind-Value=escuderia.Nacionalidad id="Nacionalidad"></InputText>
+            <ValidationMessage For="(()=>escuderia.Nacionalidad)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label asp-for="Foto" class="control-label">Escudo :</label>
+            <InputFile OnChange="InputFileToArray" id="Escudo"></InputFile>
+            <ValidationMessage For="(()=>escuderia.Escudo)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Poles" class="control-label">Poles :</label>
+            <InputNumber @bind-Value=escuderia.Poles id="Poles"></InputNumber>
+            <ValidationMessage For="(()=>escuderia.Poles)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Victorias" class="control-label">Victorias :</label>
+            <InputNumber @bind-Value=escuderia.Victorias id="Victorias"></InputNumber>
+            <ValidationMessage For="(()=>escuderia.Victorias)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="VueltasRapidas" class="control-label">VueltasRapidas :</label>
+            <InputNumber @bind-Value=escuderia.VueltasRapidas id="VueltasRapidas"></InputNumber>
+            <ValidationMessage For="(()=>escuderia.VueltasRapidas)"></ValidationMessage>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Puntos" class="control-label">Puntos :</label>
+            <InputNumber @bind-Value=escuderia.Puntos id="Puntos"></InputNumber>
+            <ValidationMessage For="(()=>escuderia.Puntos)"></ValidationMessage>
+        </div>
+        <br />
+        <button type="submit">Crear</button>
+        <br />
+        <a href="/Escuderias">Volver a los Pilotos</a>
+    </EditForm>
+</div>
+
+
+@code {
+
+    [Inject]
+    private IServicioApi _api { get; set; }
+
+    private CrearEscuderiumDTO escuderia { get; set; } = new CrearEscuderiumDTO();
+
+    private string FormCss = "visible";
+    private string GoodMessageCss = "oculto";
+    private string BadMessageCss = "oculto";
+
+    private async Task CreateEscuderia()
+    {
+        bool resultado = await _api.CrearEscuderia(escuderia);
+
+        if (resultado)
+        {
+            FormCss = "oculto";
+            GoodMessageCss = "visible";
+        }
+        else
+        {
+            FormCss = "oculto";
+            BadMessageCss = "visible";
+        }
+    }
+
+    private void VolverAIntertarlo()
+    {
+        FormCss = "visible";
+        BadMessageCss = "oculto";
+    }
+
+    private async Task InputFileToArray(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        byte[] arrayFoto = new byte[file.Size];
+
+        using (MemoryStream ms = new MemoryStream(arrayFoto))
+        {
+            await file.OpenReadStream().CopyToAsync(ms);
+        }
+
+        escuderia.Escudo = arrayFoto;
+    }
+}
+
