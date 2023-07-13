@@ -146,4 +146,21 @@ namespace F1Blazor2.Models
 
         public int VueltasRapidas { get; set; }
     }
-}
+    public class EscuderiasId
+    {
+        public int Id { get; set; }
+
+        public string Nombre { get; set; } = null!;
+
+        public EscuderiasId(int id, string nombre)
+        {
+            Id = id;
+            Nombre = nombre;
+        }
+
+        public override string ToString()
+        {
+            return Nombre;
+        }
+    }
+    }

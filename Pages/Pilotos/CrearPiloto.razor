@@ -78,13 +78,23 @@
     <br />
     <div class="form-group">
         <label for="IdEscuderia" class="control-label">IdEscuderia :</label>
-        <InputNumber @bind-Value=piloto.IdEscuderia id="IdEscuderia"></InputNumber>
+        <InputSelect @bind-Value=piloto.IdEscuderia id="IdEscuderia">
+            @foreach(var option in escuderiasSelect)
+                {
+                    <option value="@option.Id">@option.Nombre.ToString()</option>
+                }
+            </InputSelect>
         <ValidationMessage For="(()=>piloto.IdEscuderia)"></ValidationMessage>
     </div>
     <br />
     <div class="form-group">
         <label for="Dorsal" class="control-label">Dorsal :</label>
-        <InputNumber @bind-Value=piloto.Dorsal id="Dorsal"></InputNumber>
+            <InputSelect @bind-Value=piloto.Dorsal id="IdEscuderia">
+                @foreach (var option in dorsalesSelect)
+                {
+                    <option value="@option">@option</option>
+                }
+            </InputSelect>
         <ValidationMessage For="(()=>piloto.Dorsal)"></ValidationMessage>
     </div>
     <br />
@@ -101,6 +111,10 @@
     private IServicioApi _api { get; set; }
 
     private CrearPilotoDTO piloto { get; set; } = new CrearPilotoDTO();
+
+    private List<EscuderiasId> escuderiasSelect { get; set; } = new List<EscuderiasId>();
+
+    private List<int> dorsalesSelect { get; set; } = new List<int>();
 
     private string FormCss = "visible";
     private string GoodMessageCss = "oculto";
@@ -140,5 +154,21 @@
         }
 
         piloto.Foto = arrayFoto;
+    }
+
+    private async Task GetEscuderiasSelect()
+    {
+       escuderiasSelect = await _api.GetEscuderiasId();
+    }
+
+    private async Task GetDorsalesSelect()
+    {
+        dorsalesSelect = await _api.GetDorsalesDisponibles();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetEscuderiasSelect();
+        await GetDorsalesSelect();
     }
 }

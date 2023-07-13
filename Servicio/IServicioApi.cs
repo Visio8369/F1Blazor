@@ -14,6 +14,8 @@ namespace F1Blazor2.Servicio
 
         Task<bool> EliminarPiloto(int id);
 
+        Task<List<int>> GetDorsalesDisponibles();
+
         //Escuderias
         Task<List<EscuderiumEnteroDTO>> GetEscuderias();
 
@@ -24,6 +26,8 @@ namespace F1Blazor2.Servicio
         Task<bool> ActualizarEscuderia(int id, EscuderiumDTOUpdate modelo);
 
         Task<bool> EliminarEscuderia(int id);
+
+        Task<List<EscuderiasId>> GetEscuderiasId();
 
         //Carreras
         Task<List<CarreraEnteraDTO>> GetCarreras();

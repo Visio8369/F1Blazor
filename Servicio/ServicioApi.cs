@@ -1,4 +1,5 @@
 ﻿using F1Blazor2.Models;
+using F1Blazor2.Pages.Escuderias;
 using Newtonsoft.Json;
 
 namespace F1Blazor2.Servicio
@@ -109,6 +110,28 @@ namespace F1Blazor2.Servicio
             return resultado;
         }
 
+        public async Task<List<int>> GetDorsalesDisponibles() 
+        {
+
+            List<int> dorsales = new List<int>();
+
+            var response = await _cliente.GetAsync("api/Pilotos");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var respuesta = await response.Content.ReadAsStringAsync();
+                var resultado = JsonConvert.DeserializeObject<List<PilotoEnteroDTO>>(respuesta);
+                var dorsalesEnUso = resultado.Select(resultado=>resultado.Dorsal);
+
+                for (int i = 1; i < 100; i++) 
+                {
+                    if (dorsalesEnUso.Contains(i)) { }
+                    else { dorsales.Add(i); }
+                }
+            }
+            return dorsales;
+        }
+
         //Escuderias
         public async Task<List<EscuderiumEnteroDTO>> GetEscuderias()
         {
@@ -208,6 +231,27 @@ namespace F1Blazor2.Servicio
             }
 
             return resultado;
+        }
+
+        public async Task<List<EscuderiasId>> GetEscuderiasId()
+        {
+
+            List<EscuderiasId> escuderiasId = new List<EscuderiasId>();
+
+            var response = await _cliente.GetAsync("api/Escuderias");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var respuesta = await response.Content.ReadAsStringAsync();
+                var resultado = JsonConvert.DeserializeObject<List<EscuderiumEnteroDTO>>(respuesta);
+                var id = resultado.Select(resultado => resultado.Id);
+                foreach (int escuderiaId in id) 
+                {
+                    var nombre = resultado.FirstOrDefault(resultado=> resultado.Id == escuderiaId);
+                    escuderiasId.Add(new EscuderiasId(escuderiaId, nombre.Nombre));
+                }
+            }
+            return escuderiasId;
         }
 
         //Carreras
